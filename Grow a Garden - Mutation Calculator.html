@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grow a Garden - Advanced Mutation Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2f855a;
+            --secondary-color: #68d391;
+            --tertiary-color: #d3f9d8;
+            --accent-color: #f6e05e;
+            --dark-color: #1a202c;
+            --light-color: #f7fafc;
+        }
+        
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><g fill-rule="evenodd"><g fill="%23d3f9d8" fill-opacity="0.4"><path opacity=".5" d="M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z"/></g></g></svg>');
+            min-height: 100vh;
+        }
+
+        .card {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .card.selected {
+            box-shadow: 0 0 0 3px var(--accent-color), 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .card.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .card.mutually-exclusive {
+            border: 2px solid #fc8181;
+        }
+
+        .growth-card {
+            border-left: 5px solid #f6ad55;
+        }
+
+        .env-card {
+            border-left: 5px solid #4fd1c5;
+        }
+
+        .calculation-box {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-bg {
+            background-color: var(--primary-color);
+            background-image: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.8rem;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .mutation-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        input[type="number"] {
+            border: 2px solid var(--secondary-color);
+            border-radius: 8px;
+            padding: 0.5rem;
+            font-size: 1.2rem;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(104, 211, 145, 0.3);
+        }
+
+        .btn {
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary-color);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <header class="header-bg text-white py-6 shadow-lg">
+        <div class="container mx-auto px-4">
+            <h1 class="text-4xl font-bold text-center flex items-center justify-center">
+                <i class="fas fa-seedling mr-3"></i>
+                Grow a Garden - Mutation Calculator
+            </h1>
+            <p class="text-center mt-2 text-lg">Calculate your crop value with different mutations</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">
+                <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+                Understanding Mutation Stacking
+            </h2>
+            <div class="text-gray-700">
+                <p class="mb-2">The total value of your crop is calculated using the following formula:</p>
+                <div class="bg-gray-100 p-4 rounded-lg mb-4 text-lg font-semibold text-center">
+                    Total Value = Base Value × Growth Mutation × (1 + Σ Environmental Stacks)
+                </div>
+                <ul class="list-disc pl-6 mb-4">
+                    <li class="mb-1"><strong>Base Value:</strong> The original value of the crop without any mutations.</li>
+                    <li class="mb-1"><strong>Growth Mutation:</strong> Only one growth mutation (Golden or Rainbow) can be applied per crop.</li>
+                    <li class="mb-1"><strong>Environmental Stacks:</strong> The sum of bonuses from all applied environmental mutations.</li>
+                </ul>
+                <div class="bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-4">
+                    <p class="font-semibold">Important Restrictions:</p>
+                    <ul class="list-disc pl-6">
+                        <li>Only one growth mutation (Golden or Rainbow) can be applied per crop.</li>
+                        <li>Only one of Wet, Chilled, or Frozen can be applied (they are mutually exclusive).</li>
+                        <li>All other environmental mutations can stack freely.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Base Value Input -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-dollar-sign text-green-600 mr-2"></i>
+                    Base Value
+                </h2>
+                <div class="mb-4">
+                    <label for="baseValue" class="block text-gray-700 mb-2">Enter the base value of your crop:</label>
+                    <input type="number" id="baseValue" class="w-full px-4 py-2" value="100" min="1" max="999999">
+                </div>
+                <p class="text-sm text-gray-600 italic">This is the original value of your crop without any mutations applied.</p>
+            </div>
+
+            <!-- Current Calculation Display -->
+            <div class="md:col-span-2 bg-white rounded-lg shadow-lg p-6 calculation-box">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-calculator text-purple-600 mr-2"></i>
+                    Calculation Result
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                    <div>
+                        <div class="bg-gray-100 p-3 rounded-lg">
+                            <p class="text-sm font-semibold text-gray-600">Base Value:</p>
+                            <p id="calcBaseValue" class="text-2xl font-bold text-gray-800">100</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="bg-gray-100 p-3 rounded-lg">
+                            <p class="text-sm font-semibold text-gray-600">Growth Multiplier:</p>
+                            <p id="growthMultiplier" class="text-2xl font-bold text-gray-800">×1</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="bg-gray-100 p-3 rounded-lg">
+                            <p class="text-sm font-semibold text-gray-600">Environmental Stacks:</p>
+                            <p id="environmentalStacks" class="text-2xl font-bold text-gray-800">+0</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="bg-green-100 p-3 rounded-lg">
+                            <p class="text-sm font-semibold text-gray-600">Total Value:</p>
+                            <p id="totalValue" class="text-2xl font-bold text-green-600">100</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-100 p-4 rounded-lg">
+                    <h3 class="text-lg font-bold text-gray-800 mb-2">Calculation Breakdown:</h3>
+                    <div id="calculationExplanation" class="text-gray-700 text-sm">
+                        Total Value = 100 × 1 × (1 + 0) = 100
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Growth Mutations -->
+        <div class="mt-8 bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-dna text-orange-500 mr-2"></i>
+                Growth Mutations
+                <span class="ml-2 bg-orange-200 text-orange-800 text-xs px-2 py-1 rounded-full">Select Max 1</span>
+            </h2>
+            <p class="mb-4 text-gray-700">Only one growth mutation can be applied per crop. These provide a direct multiplier to your crop's base value.</p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <div id="growth-none" class="card growth-card bg-gray-50 p-4 cursor-pointer selected" data-multiplier="1" data-type="growth">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-seedling mutation-icon text-gray-400"></i>
+                        <h3 class="text-lg font-semibold">None</h3>
+                        <p class="text-xl font-bold text-orange-600">×1</p>
+                        <p class="text-sm text-gray-600 text-center mt-2">No growth mutation applied</p>
+                    </div>
+                </div>
+                
+                <div id="growth-golden" class="card growth-card bg-gray-50 p-4 cursor-pointer" data-multiplier="25" data-type="growth">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-crown mutation-icon text-yellow-500"></i>
+                        <h3 class="text-lg font-semibold">Golden</h3>
+                        <p class="text-xl font-bold text-orange-600">×25</p>
+                        <p class="text-sm text-gray-600 text-center mt-2">1% chance naturally, or influenced by a Dragonfly</p>
+                    </div>
+                </div>
+                
+                <div id="growth-rainbow" class="card growth-card bg-gray-50 p-4 cursor-pointer" data-multiplier="50" data-type="growth">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-rainbow mutation-icon text-indigo-500"></i>
+                        <h3 class="text-lg font-semibold">Rainbow</h3>
+                        <p class="text-xl font-bold text-orange-600">×50</p>
+                        <p class="text-sm text-gray-600 text-center mt-2">0.1% chance to spawn naturally, rare and high-value</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Environmental Mutations -->
+        <div class="mt-8 bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-leaf text-teal-500 mr-2"></i>
+                Environmental Mutations
+                <span class="ml-2 bg-red-200 text-red-800 text-xs px-2 py-1 rounded-full">Wet/Chilled/Frozen are mutually exclusive</span>
+            </h2>
+            <p class="mb-4 text-gray-700">Environmental mutations provide stack bonuses that add up. Note that Wet, Chilled, and Frozen are mutually exclusive - you can only select one of these.</p>
+            
+            <!-- Wet/Chilled/Frozen Group (Mutually Exclusive) -->
+            <h3 class="text-lg font-semibold text-gray-800 mb-2 border-b pb-2">Water-based Mutations <span class="text-red-500 text-sm">(Select maximum one)</span></h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+                <div id="env-wet" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="1" data-type="env" data-group="water">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-tint mutation-icon text-blue-400"></i>
+                        <h3 class="text-lg font-semibold">Wet</h3>
+                        <p class="text-xl font-bold text-teal-600">+1</p>
+                        <p class="text-sm text-gray-600 text-center mt-2">Occurs during Rain or Thunderstorm</p>
+                    </div>
+                </div>
+                
+                <div id="env-chilled" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="1" data-type="env" data-group="water">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-snowflake mutation-icon text-blue-300"></i>
+                        <h3 class="text-lg font-semibold">Chilled</h3>
+                        <p class="text-xl font-bold text-teal-600">+1</p>
+                        <p class="text-sm text-gray-600 text-center mt-2">Triggered by cold in Frost events or by a Polar Bear</p>
+                    </div>
+                </div>
+                
+                <div id="env-frozen" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="9" data-type="env" data-group="water">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-icicles mutation-icon text-blue-200"></i>
+                        <h3 class="text-lg font-semibold">Frozen</h3>
+                        <p class="text-xl font-bold text-teal-600">+9</p>
+                        <p class="text-sm text-gray-600 text-center mt-2">Requires crops to be Wet and Chilled, or influenced by a Polar Bear during snowy weather</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Other Environmental Mutations -->
+            <h3 class="text-lg font-semibold text-gray-800 mb-2 border-b pb-2">Other Environmental Mutations <span class="text-green-500 text-sm">(Can be combined freely)</span></h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div id="env-bloodlit" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="3" data-type="env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-moon mutation-icon text-red-500"></i>
+                        <h3 class="text-lg font-semibold">Bloodlit</h3>
+                        <p class="text-xl font-bold text-teal-600">+3</p>
+                        <p class="text-sm text-gray-600 text-center mt-2">Occurs during Blood Moon events, 33% chance every 3 hours</p>
+                    </div>
+                </div>
+                
+                <div id="env-shocked" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="99" data-type="env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-bolt mutation-icon text-yellow-400"></i>
+                        <h3 class="text-lg font-semibold">Shocked</h3>
+                        <p class="text-xl font-bold text-teal-600">+99</p>
+                        <p class="text-sm text-gray-600 text-center mt-2">Triggered by lightning during thunderstorms</p>
+                    </div>
+                </div>
+                
+                <div id="env-celestial" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="119" data-type="env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-star mutation-icon text-purple-400"></i>
+                        <h3 class="text-lg font-semibold">Celestial</h3>
+                        <p class="text-xl font-bold text-teal-600">+119</p>
+                        <p class="text-sm text-gray-600 text-center mt-2">Obtained during Meteor Shower events, star-struck crops</p>
+                    </div>
+                </div>
+                
+                <div id="env-disco" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="124" data-type="env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-music mutation-icon text-pink-500"></i>
+                        <h3 class="text-lg font-semibold">Disco</h3>
+                        <p class="text-xl font-bold text-teal-600">+124</p>
+                        <p class="text-sm text-gray-600 text-center mt-2">Available during Disco Event, admin-spawned (not player-triggered)</p>
+                    </div>
+                </div>
+                
+                <div id="env-chocolate" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="1" data-type="env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-cookie mutation-icon text-yellow-800"></i>
+                        <h3 class="text-lg font-semibold">Chocolate</h3>
+                        <p class="text-xl font-bold text-teal-600">+1</p>
+                        <p class="text-sm text-gray-600 text-center mt-2">Obtained by using a Chocolate Sprinkler during the 2025 Easter Event</p>
+                    </div>
+                </div>
+                
+                <div id="env-moonlit" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="1" data-type="env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-cloud-moon mutation-icon text-indigo-300"></i>
+                        <h3 class="text-lg font-semibold">Moonlit</h3>
+                        <p class="text-xl font-bold text-teal-600">+1</p>
+                        <p class="text-sm text-gray-600 text-center mt-2">Available during Night cycles, part of the Lunar Glow Event (hourly)</p>
+                    </div>
+                </div>
+                
+                <div id="env-zombified" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="24" data-type="env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-biohazard mutation-icon text-green-600"></i>
+                        <h3 class="text-lg font-semibold">Zombified</h3>
+                        <p class="text-xl font-bold text-teal-600">+24</p>
+                        <p class="text-sm text-gray-600 text-center mt-2">Chance to occur by the Chicken Zombie pet (20% every 30 minutes)</p>
+                    </div>
+                </div>
+                
+                <div id="env-plasma" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="5" data-type="env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-fire mutation-icon text-purple-500"></i>
+                        <h3 class="text-lg font-semibold">Plasma</h3>
+                        <p class="text-xl font-bold text-teal-600">+5</p>
+                        <p class="text-sm text-gray-600 text-center mt-2">Obtained through the laser admin weather (Cosmetics update, May 2025)</p>
+                    </div>
+                </div>
+                
+                <div id="env-twisted" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="30" data-type="env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-wind mutation-icon text-gray-500"></i>
+                        <h3 class="text-lg font-semibold">Twisted</h3>
+                        <p class="text-xl font-bold text-teal-600">+30</p>
+                        <p class="text-sm text-gray-600 text-center mt-2">Obtained through the Tornado Event (noted as unused per Discord staff)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Example Calculations -->
+        <div class="mt-8 bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                Example Calculations
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Example 1 -->
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h3 class="text-lg font-semibold mb-2">Example 1: Wet Mutation Alone</h3>
+                    <ul class="list-disc pl-6 text-gray-700">
+                        <li>Base Value: 100</li>
+                        <li>Growth Mutation: None (×1)</li>
+                        <li>Environmental Mutations: Wet (+1)</li>
+                        <li>Environmental Multiplier: 1 + 1 = 2</li>
+                        <li>Total Value: 100 × 1 × 2 = 200</li>
+                    </ul>
+                    <button class="btn mt-3 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm apply-example" data-example="1">
+                        Apply This Example
+                    </button>
+                </div>
+                
+                <!-- Example 2 -->
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h3 class="text-lg font-semibold mb-2">Example 2: Bloodlit Mutation Alone</h3>
+                    <ul class="list-disc pl-6 text-gray-700">
+                        <li>Base Value: 100</li>
+                        <li>Growth Mutation: None (×1)</li>
+                        <li>Environmental Mutations: Bloodlit (+3)</li>
+                        <li>Environmental Multiplier: 1 + 3 = 4</li>
+                        <li>Total Value: 100 × 1 × 4 = 400</li>
+                    </ul>
+                    <button class="btn mt-3 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm apply-example" data-example="2">
+                        Apply This Example
+                    </button>
+                </div>
+                
+                <!-- Example 3 -->
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h3 class="text-lg font-semibold mb-2">Example 3: Wet and Bloodlit Together</h3>
+                    <ul class="list-disc pl-6 text-gray-700">
+                        <li>Base Value: 100</li>
+                        <li>Growth Mutation: None (×1)</li>
+                        <li>Environmental Mutations: Wet (+1), Bloodlit (+3)</li>
+                        <li>Environmental Stack Bonus: 1 + 3 = 4</li>
+                        <li>Environmental Multiplier: 1 + 4 = 5</li>
+                        <li>Total Value: 100 × 1 × 5 = 500</li>
+                    </ul>
+                    <button class="btn mt-3 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm apply-example" data-example="3">
+                        Apply This Example
+                    </button>
+                </div>
+                
+                <!-- Example 4 -->
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h3 class="text-lg font-semibold mb-2">Example 4: Rainbow with Shocked and Frozen</h3>
+                    <ul class="list-disc pl-6 text-gray-700">
+                        <li>Base Value: 100</li>
+                        <li>Growth Mutation: Rainbow (×50)</li>
+                        <li>Environmental Mutations: Shocked (+99), Frozen (+9)</li>
+                        <li>Environmental Stack Bonus: 99 + 9 = 108</li>
+                        <li>Environmental Multiplier: 1 + 108 = 109</li>
+                        <li>Total Value: 100 × 50 × 109 = 545,000</li>
+                    </ul>
+                    <button class="btn mt-3 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm apply-example" data-example="4">
+                        Apply This Example
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reverse Mutation Calculator -->
+        <div class="mt-8 bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-undo text-blue-500 mr-2"></i>
+                Reverse Mutation Calculator - Find Base Value
+            </h2>
+            <p class="text-gray-700 mb-4">Enter the final value of your mutated crop and select the mutations it has to find its original base value.</p>
+            <p class="text-gray-700 mb-4 text-sm">Formula: Original Base Value = Final Value / (Growth Multiplier × (1 + Σ Environmental Stack Bonus))</p>
+        
+            <!-- Final Value Input -->
+            <div class="mb-6">
+                <label for="finalValueInput" class="block text-gray-700 mb-2">Enter the final value of your crop:</label>
+                <input type="number" id="finalValueInput" class="w-full px-4 py-2" value="100" min="1">
+            </div>
+        
+            <!-- Reverse Calculation Display -->
+            <div class="bg-blue-50 p-6 rounded-lg calculation-box mb-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                    <i class="fas fa-calculator text-indigo-600 mr-2"></i>
+                    Original Base Value Result
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <div class="bg-gray-100 p-3 rounded-lg">
+                            <p class="text-sm font-semibold text-gray-600">Entered Final Value:</p>
+                            <p id="revFinalValueDisplay" class="text-2xl font-bold text-gray-800">100</p>
+                        </div>
+                    </div>
+                     <div>
+                        <div class="bg-gray-100 p-3 rounded-lg">
+                            <p class="text-sm font-semibold text-gray-600">Selected Growth Multiplier:</p>
+                            <p id="revGrowthMultiplierDisplay" class="text-2xl font-bold text-gray-800">×1</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="bg-gray-100 p-3 rounded-lg">
+                            <p class="text-sm font-semibold text-gray-600">Selected Environmental Stacks:</p>
+                            <p id="revEnvironmentalStacksDisplay" class="text-2xl font-bold text-gray-800">+0</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="bg-indigo-100 p-3 rounded-lg">
+                            <p class="text-sm font-semibold text-gray-600">Calculated Original Base Value:</p>
+                            <p id="calculatedBaseValueDisplay" class="text-2xl font-bold text-indigo-600">100</p>
+                        </div>
+                    </div>
+                </div>
+                 <div class="bg-gray-100 p-4 rounded-lg">
+                    <h4 class="text-md font-bold text-gray-800 mb-2">Calculation Breakdown:</h4>
+                    <div id="reverseCalculationExplanationDisplay" class="text-gray-700 text-sm">
+                        Original Base Value = 100 / (1 × (1 + 0)) = 100
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Reverse Growth Mutations -->
+            <h3 class="text-xl font-bold text-gray-800 mb-3">Select Applied Growth Mutation <span class="ml-2 bg-orange-200 text-orange-800 text-xs px-2 py-1 rounded-full">Select Max 1</span></h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+                <div id="rev-growth-none" class="card growth-card bg-gray-50 p-4 cursor-pointer selected" data-multiplier="1" data-type="rev-growth">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-seedling mutation-icon text-gray-400"></i>
+                        <h3 class="text-lg font-semibold">None</h3>
+                        <p class="text-xl font-bold text-orange-600">×1</p>
+                        <p class="text-sm text-gray-600 text-center mt-2">No growth mutation applied</p>
+                    </div>
+                </div>
+                <div id="rev-growth-golden" class="card growth-card bg-gray-50 p-4 cursor-pointer" data-multiplier="25" data-type="rev-growth">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-crown mutation-icon text-yellow-500"></i>
+                        <h3 class="text-lg font-semibold">Golden</h3>
+                        <p class="text-xl font-bold text-orange-600">×25</p>
+                        <p class="text-sm text-gray-600 text-center mt-2">1% chance naturally, or influenced by a Dragonfly</p>
+                    </div>
+                </div>
+                <div id="rev-growth-rainbow" class="card growth-card bg-gray-50 p-4 cursor-pointer" data-multiplier="50" data-type="rev-growth">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-rainbow mutation-icon text-indigo-500"></i>
+                        <h3 class="text-lg font-semibold">Rainbow</h3>
+                        <p class="text-xl font-bold text-orange-600">×50</p>
+                         <p class="text-sm text-gray-600 text-center mt-2">0.1% chance to spawn naturally, rare and high-value</p>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Reverse Environmental Mutations -->
+            <h3 class="text-xl font-bold text-gray-800 mb-3">Select Applied Environmental Mutations <span class="ml-2 bg-red-200 text-red-800 text-xs px-2 py-1 rounded-full">Wet/Chilled/Frozen are mutually exclusive</span></h3>
+            <h4 class="text-lg font-semibold text-gray-800 mb-2 border-b pb-2">Water-based Mutations <span class="text-red-500 text-sm">(Select maximum one)</span></h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+                <div id="rev-env-wet" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="1" data-type="rev-env" data-group="rev-water">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-tint mutation-icon text-blue-400"></i>
+                        <h3 class="text-lg font-semibold">Wet</h3>
+                        <p class="text-xl font-bold text-teal-600">+1</p>
+                        <p class="text-sm text-gray-600 text-center mt-2">Occurs during Rain or Thunderstorm</p>
+                    </div>
+                </div>
+                <div id="rev-env-chilled" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="1" data-type="rev-env" data-group="rev-water">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-snowflake mutation-icon text-blue-300"></i>
+                        <h3 class="text-lg font-semibold">Chilled</h3>
+                        <p class="text-xl font-bold text-teal-600">+1</p>
+                        <p class="text-sm text-gray-600 text-center mt-2">Triggered by cold in Frost events or by a Polar Bear</p>
+                    </div>
+                </div>
+                <div id="rev-env-frozen" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="9" data-type="rev-env" data-group="rev-water">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-icicles mutation-icon text-blue-200"></i>
+                        <h3 class="text-lg font-semibold">Frozen</h3>
+                        <p class="text-xl font-bold text-teal-600">+9</p>
+                        <p class="text-sm text-gray-600 text-center mt-2">Requires crops to be Wet and Chilled, or influenced by a Polar Bear during snowy weather</p>
+                    </div>
+                </div>
+            </div>
+            <h4 class="text-lg font-semibold text-gray-800 mb-2 border-b pb-2">Other Environmental Mutations <span class="text-green-500 text-sm">(Can be combined freely)</span></h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div id="rev-env-bloodlit" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="3" data-type="rev-env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-moon mutation-icon text-red-500"></i>
+                        <h3 class="text-lg font-semibold">Bloodlit</h3>
+                        <p class="text-xl font-bold text-teal-600">+3</p>
+                        <p class="text-sm text-gray-600 text-center mt-2">Occurs during Blood Moon events, 33% chance every 3 hours</p>
+                    </div>
+                </div>
+                <div id="rev-env-shocked" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="99" data-type="rev-env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-bolt mutation-icon text-yellow-400"></i>
+                        <h3 class="text-lg font-semibold">Shocked</h3>
+                        <p class="text-xl font-bold text-teal-600">+99</p>
+                        <p class="text-sm text-gray-600 text-center mt-2">Triggered by lightning during thunderstorms</p>
+                    </div>
+                </div>
+                <div id="rev-env-celestial" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="119" data-type="rev-env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-star mutation-icon text-purple-400"></i>
+                        <h3 class="text-lg font-semibold">Celestial</h3>
+                        <p class="text-xl font-bold text-teal-600">+119</p>
+                        <p class="text-sm text-gray-600 text-center mt-2">Obtained during Meteor Shower events, star-struck crops</p>
+                    </div>
+                </div>
+                 <div id="rev-env-disco" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="124" data-type="rev-env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-music mutation-icon text-pink-500"></i>
+                        <h3 class="text-lg font-semibold">Disco</h3>
+                        <p class="text-xl font-bold text-teal-600">+124</p>
+                         <p class="text-sm text-gray-600 text-center mt-2">Available during Disco Event, admin-spawned (not player-triggered)</p>
+                    </div>
+                </div>
+                 <div id="rev-env-chocolate" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="1" data-type="rev-env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-cookie mutation-icon text-yellow-800"></i>
+                        <h3 class="text-lg font-semibold">Chocolate</h3>
+                        <p class="text-xl font-bold text-teal-600">+1</p>
+                        <p class="text-sm text-gray-600 text-center mt-2">Obtained by using a Chocolate Sprinkler during the 2025 Easter Event</p>
+                    </div>
+                </div>
+                <div id="rev-env-moonlit" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="1" data-type="rev-env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-cloud-moon mutation-icon text-indigo-300"></i>
+                        <h3 class="text-lg font-semibold">Moonlit</h3>
+                        <p class="text-xl font-bold text-teal-600">+1</p>
+                        <p class="text-sm text-gray-600 text-center mt-2">Available during Night cycles, part of the Lunar Glow Event (hourly)</p>
+                    </div>
+                </div>
+                <div id="rev-env-zombified" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="24" data-type="rev-env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-biohazard mutation-icon text-green-600"></i>
+                        <h3 class="text-lg font-semibold">Zombified</h3>
+                        <p class="text-xl font-bold text-teal-600">+24</p>
+                        <p class="text-sm text-gray-600 text-center mt-2">Chance to occur by the Chicken Zombie pet (20% every 30 minutes)</p>
+                    </div>
+                </div>
+                <div id="rev-env-plasma" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="5" data-type="rev-env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-fire mutation-icon text-purple-500"></i>
+                        <h3 class="text-lg font-semibold">Plasma</h3>
+                        <p class="text-xl font-bold text-teal-600">+5</p>
+                        <p class="text-sm text-gray-600 text-center mt-2">Obtained through the laser admin weather (Cosmetics update, May 2025)</p>
+                    </div>
+                </div>
+                 <div id="rev-env-twisted" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="30" data-type="rev-env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-wind mutation-icon text-gray-500"></i>
+                        <h3 class="text-lg font-semibold">Twisted</h3>
+                        <p class="text-xl font-bold text-teal-600">+30</p>
+                        <p class="text-sm text-gray-600 text-center mt-2">Obtained through the Tornado Event (noted as unused per Discord staff)</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Reset Button for Reverse Calc -->
+            <div class="mt-6 text-center">
+                <button id="resetReverseBtn" class="btn bg-indigo-500 hover:bg-indigo-600 text-white px-6 py-3 rounded-lg shadow-lg">
+                    <i class="fas fa-redo-alt mr-2"></i>Reset Reverse Calculator Selections
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Reset Button -->
+        <div class="mt-8 text-center">
+            <button id="resetBtn" class="btn bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg shadow-lg">
+                <i class="fas fa-redo-alt mr-2"></i>Reset Main Calculator Selections
+            </button>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-6 mt-8">
+        <div class="container mx-auto px-4 text-center">
+            <p>© 2024 Grow a Garden - Mutation Calculator</p>
+            <p class="text-gray-400 mt-2">This calculator is designed to help players understand the mutation stacking system in the game.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Main Calculator Elements & State ---
+            const baseValueInput = document.getElementById('baseValue');
+            const calcBaseValueDisplay = document.getElementById('calcBaseValue');
+            const growthMultiplierDisplay = document.getElementById('growthMultiplier');
+            const environmentalStacksDisplay = document.getElementById('environmentalStacks');
+            const totalValueDisplay = document.getElementById('totalValue');
+            const calculationExplanationDisplay = document.getElementById('calculationExplanation');
+            const resetBtn = document.getElementById('resetBtn');
+            const growthCards = document.querySelectorAll('[data-type="growth"]');
+            const envCards = document.querySelectorAll('[data-type="env"]');
+            const exampleButtons = document.querySelectorAll('.apply-example');
+            
+            let selectedGrowth = 'growth-none';
+            let selectedEnvs = new Set();
+            let waterGroupSelected = '';
+
+            // --- Reverse Calculator Elements & State ---
+            const finalValueInputEl = document.getElementById('finalValueInput');
+            const calculatedBaseValueDisplayEl = document.getElementById('calculatedBaseValueDisplay');
+            const revFinalValueDisplayEl = document.getElementById('revFinalValueDisplay');
+            const revGrowthMultiplierDisplayEl = document.getElementById('revGrowthMultiplierDisplay');
+            const revEnvironmentalStacksDisplayEl = document.getElementById('revEnvironmentalStacksDisplay');
+            const reverseCalculationExplanationDisplayEl = document.getElementById('reverseCalculationExplanationDisplay');
+            const revGrowthCards = document.querySelectorAll('[data-type="rev-growth"]');
+            const revEnvCards = document.querySelectorAll('[data-type="rev-env"]');
+            const resetReverseBtn = document.getElementById('resetReverseBtn');
+
+            let reverseSelectedGrowth = 'rev-growth-none';
+            let reverseSelectedEnvs = new Set();
+            let reverseWaterGroupSelected = '';
+            
+            // Initialize both calculators
+            updateCalculation();
+            updateReverseCalculation();
+            
+            // --- Main Calculator Event Listeners ---
+            baseValueInput.addEventListener('input', updateCalculation);
+            
+            growthCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const id = this.id;
+                    growthCards.forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedGrowth = id;
+                    updateCalculation();
+                });
+            });
+            
+            envCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const id = this.id;
+                    const group = this.getAttribute('data-group');
+                    
+                    if (group === 'water') {
+                        if (selectedEnvs.has(id)) {
+                            selectedEnvs.delete(id);
+                            this.classList.remove('selected');
+                            waterGroupSelected = '';
+                        } else {
+                            if (waterGroupSelected) {
+                                selectedEnvs.delete(waterGroupSelected);
+                                document.getElementById(waterGroupSelected).classList.remove('selected');
+                            }
+                            selectedEnvs.add(id);
+                            this.classList.add('selected');
+                            waterGroupSelected = id;
+                        }
+                    } else {
+                        if (selectedEnvs.has(id)) {
+                            selectedEnvs.delete(id);
+                            this.classList.remove('selected');
+                        } else {
+                            selectedEnvs.add(id);
+                            this.classList.add('selected');
+                        }
+                    }
+                    updateCalculation();
+                });
+            });
+            
+            resetBtn.addEventListener('click', function() {
+                growthCards.forEach(card => card.classList.remove('selected'));
+                document.getElementById('growth-none').classList.add('selected');
+                selectedGrowth = 'growth-none';
+                
+                envCards.forEach(card => card.classList.remove('selected'));
+                selectedEnvs.clear();
+                waterGroupSelected = '';
+                
+                baseValueInput.value = 100;
+                updateCalculation();
+            });
+            
+            exampleButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const exampleNum = this.getAttribute('data-example');
+                    applyExample(exampleNum);
+                });
+            });
+            
+            // --- Reverse Calculator Event Listeners ---
+            finalValueInputEl.addEventListener('input', updateReverseCalculation);
+
+            revGrowthCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const id = this.id;
+                    revGrowthCards.forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+                    reverseSelectedGrowth = id;
+                    updateReverseCalculation();
+                });
+            });
+
+            revEnvCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const id = this.id;
+                    const group = this.getAttribute('data-group'); // e.g., "rev-water"
+                    
+                    if (group === 'rev-water') {
+                        if (reverseSelectedEnvs.has(id)) {
+                            reverseSelectedEnvs.delete(id);
+                            this.classList.remove('selected');
+                            reverseWaterGroupSelected = '';
+                        } else {
+                            if (reverseWaterGroupSelected) {
+                                reverseSelectedEnvs.delete(reverseWaterGroupSelected);
+                                document.getElementById(reverseWaterGroupSelected).classList.remove('selected');
+                            }
+                            reverseSelectedEnvs.add(id);
+                            this.classList.add('selected');
+                            reverseWaterGroupSelected = id;
+                        }
+                    } else {
+                        if (reverseSelectedEnvs.has(id)) {
+                            reverseSelectedEnvs.delete(id);
+                            this.classList.remove('selected');
+                        } else {
+                            reverseSelectedEnvs.add(id);
+                            this.classList.add('selected');
+                        }
+                    }
+                    updateReverseCalculation();
+                });
+            });
+
+            resetReverseBtn.addEventListener('click', function() {
+                revGrowthCards.forEach(card => card.classList.remove('selected'));
+                document.getElementById('rev-growth-none').classList.add('selected');
+                reverseSelectedGrowth = 'rev-growth-none';
+                
+                revEnvCards.forEach(card => card.classList.remove('selected'));
+                reverseSelectedEnvs.clear();
+                reverseWaterGroupSelected = '';
+                
+                finalValueInputEl.value = 100;
+                updateReverseCalculation();
+            });
+
+            // --- Main Calculator Functions ---
+            function updateCalculation() {
+                const baseValue = parseInt(baseValueInput.value) || 0;
+                const growthCard = document.getElementById(selectedGrowth);
+                const growthMultiplier = parseInt(growthCard.getAttribute('data-multiplier')) || 1;
+                
+                let envStackBonus = 0;
+                let envBonusList = [];
+                selectedEnvs.forEach(envId => {
+                    const envCard = document.getElementById(envId);
+                    const bonus = parseInt(envCard.getAttribute('data-bonus')) || 0;
+                    envStackBonus += bonus;
+                    const name = envCard.querySelector('h3').innerText;
+                    envBonusList.push(`${name} (+${bonus})`);
+                });
+                
+                const envMultiplier = 1 + envStackBonus;
+                const totalValue = baseValue * growthMultiplier * envMultiplier;
+                
+                calcBaseValueDisplay.textContent = baseValue.toLocaleString();
+                growthMultiplierDisplay.textContent = `×${growthMultiplier}`;
+                environmentalStacksDisplay.textContent = `+${envStackBonus}`;
+                totalValueDisplay.textContent = totalValue.toLocaleString();
+                
+                let explanation = `Total Value = ${baseValue.toLocaleString()} × ${growthMultiplier} × (1 + ${envStackBonus}) = ${totalValue.toLocaleString()}`;
+                if (envBonusList.length > 0) {
+                    explanation += `<br><br>Environmental Bonuses: ${envBonusList.join(", ")}`;
+                }
+                calculationExplanationDisplay.innerHTML = explanation;
+            }
+            
+            function applyExample(exampleNum) {
+                growthCards.forEach(card => card.classList.remove('selected'));
+                envCards.forEach(card => card.classList.remove('selected'));
+                selectedEnvs.clear();
+                waterGroupSelected = '';
+                baseValueInput.value = 100;
+                
+                switch(exampleNum) {
+                    case "1":
+                        document.getElementById('growth-none').classList.add('selected');
+                        selectedGrowth = 'growth-none';
+                        document.getElementById('env-wet').classList.add('selected');
+                        selectedEnvs.add('env-wet');
+                        waterGroupSelected = 'env-wet';
+                        break;
+                    case "2":
+                        document.getElementById('growth-none').classList.add('selected');
+                        selectedGrowth = 'growth-none';
+                        document.getElementById('env-bloodlit').classList.add('selected');
+                        selectedEnvs.add('env-bloodlit');
+                        break;
+                    case "3":
+                        document.getElementById('growth-none').classList.add('selected');
+                        selectedGrowth = 'growth-none';
+                        document.getElementById('env-wet').classList.add('selected');
+                        selectedEnvs.add('env-wet');
+                        waterGroupSelected = 'env-wet';
+                        document.getElementById('env-bloodlit').classList.add('selected');
+                        selectedEnvs.add('env-bloodlit');
+                        break;
+                    case "4":
+                        document.getElementById('growth-rainbow').classList.add('selected');
+                        selectedGrowth = 'growth-rainbow';
+                        document.getElementById('env-shocked').classList.add('selected');
+                        selectedEnvs.add('env-shocked');
+                        document.getElementById('env-frozen').classList.add('selected');
+                        selectedEnvs.add('env-frozen');
+                        waterGroupSelected = 'env-frozen';
+                        break;
+                }
+                updateCalculation();
+                document.querySelector('.calculation-box').scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            }
+
+            // --- Reverse Calculator Functions ---
+            function updateReverseCalculation() {
+                const finalValue = parseInt(finalValueInputEl.value) || 0;
+
+                const revGrowthCard = document.getElementById(reverseSelectedGrowth);
+                const growthMultiplierRev = parseInt(revGrowthCard.getAttribute('data-multiplier')) || 1;
+
+                let envStackBonusRev = 0;
+                let envBonusListRev = [];
+                reverseSelectedEnvs.forEach(envId => {
+                    const envCard = document.getElementById(envId);
+                    if (envCard) { // Ensure card exists
+                        const bonus = parseInt(envCard.getAttribute('data-bonus')) || 0;
+                        envStackBonusRev += bonus;
+                        const nameEl = envCard.querySelector('h3');
+                        if (nameEl) {
+                             envBonusListRev.push(`${nameEl.innerText} (+${bonus})`);
+                        }
+                    }
+                });
+
+                const envMultiplierFullRev = 1 + envStackBonusRev;
+                const denominator = growthMultiplierRev * envMultiplierFullRev;
+                
+                let calculatedBaseValue = 0;
+                if (denominator !== 0 && finalValue >= 0) { // Added finalValue >= 0 for sensibility
+                    calculatedBaseValue = finalValue / denominator;
+                } else if (finalValue < 0) {
+                    calculatedBaseValue = "Final value must be positive";
+                }
+                 else {
+                    calculatedBaseValue = "Error (division by zero/invalid)"; 
+                }
+
+                revFinalValueDisplayEl.textContent = finalValue.toLocaleString();
+                revGrowthMultiplierDisplayEl.textContent = `×${growthMultiplierRev}`;
+                revEnvironmentalStacksDisplayEl.textContent = `+${envStackBonusRev}`;
+                
+                if (typeof calculatedBaseValue === 'number') {
+                    // Round to 2 decimal places, but only show decimals if they exist
+                    const roundedValue = parseFloat(calculatedBaseValue.toFixed(2));
+                    calculatedBaseValueDisplayEl.textContent = roundedValue.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2}); 
+                    reverseCalculationExplanationDisplayEl.innerHTML = 
+                        `Original Base Value = ${finalValue.toLocaleString()} / (${growthMultiplierRev} × (1 + ${envStackBonusRev})) = ${roundedValue.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2})}`;
+                } else {
+                     calculatedBaseValueDisplayEl.textContent = calculatedBaseValue;
+                     reverseCalculationExplanationDisplayEl.textContent = `Original Base Value = ${finalValue.toLocaleString()} / (${growthMultiplierRev} × (1 + ${envStackBonusRev})) = ${calculatedBaseValue}`;
+                }
+                
+                if (envBonusListRev.length > 0 && typeof calculatedBaseValue === 'number') { // Append only if calculation was successful
+                    reverseCalculationExplanationDisplayEl.innerHTML += `<br><br>Selected Environmental Bonuses: ${envBonusListRev.join(", ")}`;
+                } else if (envBonusListRev.length > 0) {
+                    const currentText = reverseCalculationExplanationDisplayEl.textContent;
+                    reverseCalculationExplanationDisplayEl.innerHTML = currentText + `<br><br>Selected Environmental Bonuses: ${envBonusListRev.join(", ")}`;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
