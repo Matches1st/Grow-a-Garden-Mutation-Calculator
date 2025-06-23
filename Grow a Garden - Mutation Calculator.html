@@ -191,6 +191,7 @@
                     <ul class="list-disc pl-6">
                         <li>Only one growth mutation (Golden or Rainbow) can be applied per crop.</li>
                         <li>Only one of Wet, Chilled, or Frozen can be applied (they are mutually exclusive).</li>
+                        <li>Some mutations (e.g., Paradisaical) replace the mutations that cause them. If your plant has Paradisaical, select only Paradisaical, not its ingredients (Verdant + Sundried).</li>
                         <li>All other environmental mutations can stack freely.</li>
                         <li>"Standalone ×N" on cards indicates the multiplier if it's the only mutation active (no other environmental, no growth mutation for env cards).</li>
                     </ul>
@@ -334,44 +335,17 @@
             </div>
             
             <!-- Other Environmental Mutations -->
-            <h3 class="text-lg font-semibold text-gray-800 mb-2 border-b pb-2">Other Environmental Mutations <span class="text-green-500 text-sm">(Can be combined freely)</span></h3>
+            <h3 class="text-lg font-semibold text-gray-800 mb-2 border-b pb-2">Other Environmental Mutations <span class="text-green-500 text-sm">(Can be combined freely, sorted by effectiveness)</span></h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                <div id="env-bloodlit" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="3" data-type="env">
+                <!-- +1 Bonus Mutations -->
+                <div id="env-windstruck" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="1" data-type="env">
                     <div class="flex flex-col items-center">
-                        <i class="fas fa-moon mutation-icon text-red-500"></i>
-                        <h3 class="text-lg font-semibold">Bloodlit</h3>
-                        <p class="text-xl font-bold text-teal-600">+3</p>
-                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×4. Occurs during Blood Moon events, 33% chance every 3 hours</p>
+                        <i class="fas fa-wind mutation-icon text-gray-500"></i>
+                        <h3 class="text-lg font-semibold">Windstruck</h3>
+                        <p class="text-xl font-bold text-teal-600">+1</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×2. Can be obtained during Windy weather.</p>
                     </div>
                 </div>
-                
-                <div id="env-shocked" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="99" data-type="env">
-                    <div class="flex flex-col items-center">
-                        <i class="fas fa-bolt mutation-icon text-yellow-400"></i>
-                        <h3 class="text-lg font-semibold">Shocked</h3>
-                        <p class="text-xl font-bold text-teal-600">+99</p>
-                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×100. Triggered by lightning during thunderstorms</p>
-                    </div>
-                </div>
-                
-                <div id="env-celestial" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="119" data-type="env">
-                    <div class="flex flex-col items-center">
-                        <i class="fas fa-star mutation-icon text-purple-400"></i>
-                        <h3 class="text-lg font-semibold">Celestial</h3>
-                        <p class="text-xl font-bold text-teal-600">+119</p>
-                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×120. Obtained during Meteor Shower events, star-struck crops</p>
-                    </div>
-                </div>
-                
-                <div id="env-disco" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="124" data-type="env">
-                    <div class="flex flex-col items-center">
-                        <i class="fas fa-music mutation-icon text-pink-500"></i>
-                        <h3 class="text-lg font-semibold">Disco</h3>
-                        <p class="text-xl font-bold text-teal-600">+124</p>
-                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×125. Available during Disco Event, admin-spawned (not player-triggered)</p>
-                    </div>
-                </div>
-                
                 <div id="env-chocolate" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="1" data-type="env">
                     <div class="flex flex-col items-center">
                         <i class="fas fa-cookie mutation-icon text-yellow-800"></i>
@@ -380,7 +354,6 @@
                         <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×2. Obtained by using a Chocolate Sprinkler during the 2025 Easter Event</p>
                     </div>
                 </div>
-                
                 <div id="env-moonlit" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="1" data-type="env">
                     <div class="flex flex-col items-center">
                         <i class="fas fa-cloud-moon mutation-icon text-indigo-300"></i>
@@ -389,34 +362,7 @@
                         <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×2. Available during Night cycles, part of the Lunar Glow Event (hourly)</p>
                     </div>
                 </div>
-                
-                <div id="env-zombified" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="24" data-type="env">
-                    <div class="flex flex-col items-center">
-                        <i class="fas fa-biohazard mutation-icon text-green-600"></i>
-                        <h3 class="text-lg font-semibold">Zombified</h3>
-                        <p class="text-xl font-bold text-teal-600">+24</p>
-                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×25. Chance to occur by the Chicken Zombie pet (20% every 30 minutes)</p>
-                    </div>
-                </div>
-                
-                <div id="env-plasma" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="4" data-type="env">
-                    <div class="flex flex-col items-center">
-                        <i class="fas fa-fire mutation-icon text-purple-500"></i>
-                        <h3 class="text-lg font-semibold">Plasma</h3>
-                        <p class="text-xl font-bold text-teal-600">+4</p>
-                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×5. Obtained through the laser admin weather (Cosmetics update, May 2025)</p>
-                    </div>
-                </div>
-                
-                <div id="env-twisted" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="30" data-type="env">
-                    <div class="flex flex-col items-center">
-                        <i class="fas fa-wind mutation-icon text-gray-500"></i>
-                        <h3 class="text-lg font-semibold">Twisted</h3>
-                        <p class="text-xl font-bold text-teal-600">+30</p>
-                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×31. Obtained through the Tornado Event (noted as unused per Discord staff)</p>
-                    </div>
-                </div>
-
+                <!-- +2 Bonus Mutation -->
                 <div id="env-pollinated" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="2" data-type="env">
                     <div class="flex flex-col items-center">
                         <i class="fas fa-asterisk mutation-icon text-yellow-600"></i>
@@ -425,13 +371,46 @@
                         <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×3. During Swarm event in Buzzy Bees update or by using bees (e.g., Petal Bee) in garden</p>
                     </div>
                 </div>
-
-                <div id="env-voidtouched" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="134" data-type="env">
+                <!-- +3 Bonus Mutations -->
+                <div id="env-burnt" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="3" data-type="env">
                     <div class="flex flex-col items-center">
-                        <i class="fas fa-circle-notch mutation-icon text-purple-600"></i>
-                        <h3 class="text-lg font-semibold">Void Touched</h3>
-                        <p class="text-xl font-bold text-teal-600">+134</p>
-                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×135. During Black Hole weather event (admin-spawned)</p>
+                        <i class="fas fa-fire-alt mutation-icon text-red-600"></i>
+                        <h3 class="text-lg font-semibold">Burnt</h3>
+                        <p class="text-xl font-bold text-teal-600">+3</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×4. Can be obtained using the Cooked Owl pet.</p>
+                    </div>
+                </div>
+                <div id="env-verdant" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="3" data-type="env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-leaf mutation-icon text-green-500"></i>
+                        <h3 class="text-lg font-semibold">Verdant</h3>
+                        <p class="text-xl font-bold text-teal-600">+3</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×4. Can be obtained by the passive ability of the Scarlet Macaw pet.</p>
+                    </div>
+                </div>
+                <div id="env-bloodlit" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="3" data-type="env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-moon mutation-icon text-red-500"></i>
+                        <h3 class="text-lg font-semibold">Bloodlit</h3>
+                        <p class="text-xl font-bold text-teal-600">+3</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×4. Occurs during Blood Moon events, 33% chance every 3 hours</p>
+                    </div>
+                </div>
+                <!-- +4 Bonus Mutations -->
+                <div id="env-heavenly" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="4" data-type="env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-feather-alt mutation-icon text-blue-300"></i>
+                        <h3 class="text-lg font-semibold">Heavenly</h3>
+                        <p class="text-xl font-bold text-teal-600">+4</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×5. Obtained during the admin-exclusive Floating Jandel Event.</p>
+                    </div>
+                </div>
+                <div id="env-plasma" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="4" data-type="env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-fire mutation-icon text-purple-500"></i>
+                        <h3 class="text-lg font-semibold">Plasma</h3>
+                        <p class="text-xl font-bold text-teal-600">+4</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×5. Obtained through the laser admin weather (Cosmetics update, May 2025)</p>
                     </div>
                 </div>
                 <div id="env-honeyglazed" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="4" data-type="env">
@@ -440,6 +419,127 @@
                         <h3 class="text-lg font-semibold">Honey Glazed</h3>
                         <p class="text-xl font-bold text-teal-600">+4</p>
                         <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×5. By placing the Honey Sprinkler or using the Bear Bee Pet</p>
+                    </div>
+                </div>
+                <!-- +17 Bonus Mutation -->
+                <div id="env-paradisaical" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="17" data-type="env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-spa mutation-icon text-pink-400"></i>
+                        <h3 class="text-lg font-semibold">Paradisaical</h3>
+                        <p class="text-xl font-bold text-teal-600">+17</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×18. Occurs when a plant has both Verdant and Sundried mutations.</p>
+                    </div>
+                </div>
+                <!-- +24 Bonus Mutations -->
+                <div id="env-cooked" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="24" data-type="env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-drumstick-bite mutation-icon text-yellow-900"></i>
+                        <h3 class="text-lg font-semibold">Cooked</h3>
+                        <p class="text-xl font-bold text-teal-600">+24</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×25. Can be obtained using the Cooked Owl pet.</p>
+                    </div>
+                </div>
+                 <div id="env-molten" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="24" data-type="env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-fire-alt mutation-icon text-red-800"></i>
+                        <h3 class="text-lg font-semibold">Molten</h3>
+                        <p class="text-xl font-bold text-teal-600">+24</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×25. Obtained only during the admin-exclusive Volcano event.</p>
+                    </div>
+                </div>
+                <div id="env-zombified" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="24" data-type="env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-biohazard mutation-icon text-green-600"></i>
+                        <h3 class="text-lg font-semibold">Zombified</h3>
+                        <p class="text-xl font-bold text-teal-600">+24</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×25. Chance to occur by the Chicken Zombie pet (20% every 30 minutes)</p>
+                    </div>
+                </div>
+                <!-- +30 Bonus Mutation -->
+                <div id="env-twisted" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="30" data-type="env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-wind mutation-icon text-gray-500"></i>
+                        <h3 class="text-lg font-semibold">Twisted</h3>
+                        <p class="text-xl font-bold text-teal-600">+30</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×31. Obtained through the Tornado Event (noted as unused per Discord staff)</p>
+                    </div>
+                </div>
+                <!-- +84 Bonus Mutation -->
+                <div id="env-sundried" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="84" data-type="env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-sun mutation-icon text-orange-500"></i>
+                        <h3 class="text-lg font-semibold">Sundried</h3>
+                        <p class="text-xl font-bold text-teal-600">+84</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×85. Can be obtained during Heatwave events.</p>
+                    </div>
+                </div>
+                <!-- +99 Bonus Mutations -->
+                 <div id="env-alienlike" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="99" data-type="env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-user-astronaut mutation-icon text-green-400"></i>
+                        <h3 class="text-lg font-semibold">Alienlike</h3>
+                        <p class="text-xl font-bold text-teal-600">+99</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×100. Can be obtained during the Alien Invasion event.</p>
+                    </div>
+                </div>
+                <div id="env-shocked" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="99" data-type="env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-bolt mutation-icon text-yellow-400"></i>
+                        <h3 class="text-lg font-semibold">Shocked</h3>
+                        <p class="text-xl font-bold text-teal-600">+99</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×100. Triggered by lightning during thunderstorms</p>
+                    </div>
+                </div>
+                <!-- +119 Bonus Mutations -->
+                <div id="env-galactic" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="119" data-type="env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-space-shuttle mutation-icon text-purple-500"></i>
+                        <h3 class="text-lg font-semibold">Galactic</h3>
+                        <p class="text-xl font-bold text-teal-600">+119</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×120. Can be obtained during the Space Travel event.</p>
+                    </div>
+                </div>
+                <div id="env-celestial" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="119" data-type="env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-star mutation-icon text-purple-400"></i>
+                        <h3 class="text-lg font-semibold">Celestial</h3>
+                        <p class="text-xl font-bold text-teal-600">+119</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×120. Obtained during Meteor Shower events, star-struck crops</p>
+                    </div>
+                </div>
+                <!-- +124 Bonus Mutations -->
+                <div id="env-meteoric" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="124" data-type="env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-meteor mutation-icon text-red-500"></i>
+                        <h3 class="text-lg font-semibold">Meteoric</h3>
+                        <p class="text-xl font-bold text-teal-600">+124</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×125. Obtained only during the admin-exclusive Meteor Strike event.</p>
+                    </div>
+                </div>
+                <div id="env-disco" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="124" data-type="env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-music mutation-icon text-pink-500"></i>
+                        <h3 class="text-lg font-semibold">Disco</h3>
+                        <p class="text-xl font-bold text-teal-600">+124</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×125. Available during Disco Event, admin-spawned (not player-triggered)</p>
+                    </div>
+                </div>
+                <!-- +134 Bonus Mutation -->
+                <div id="env-voidtouched" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="134" data-type="env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-circle-notch mutation-icon text-purple-600"></i>
+                        <h3 class="text-lg font-semibold">Void Touched</h3>
+                        <p class="text-xl font-bold text-teal-600">+134</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×135. During Black Hole weather event (admin-spawned)</p>
+                    </div>
+                </div>
+                <!-- +149 Bonus Mutation -->
+                <div id="env-dawnbound" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="149" data-type="env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-sun mutation-icon text-yellow-400"></i>
+                        <h3 class="text-lg font-semibold">Dawnbound</h3>
+                        <p class="text-xl font-bold text-teal-600">+149</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×150. Obtained during the Sun God Event; only applies to Sunflowers.</p>
                     </div>
                 </div>
             </div>
@@ -630,41 +730,18 @@
                     </div>
                 </div>
             </div>
-            <h4 class="text-lg font-semibold text-gray-800 mb-2 border-b pb-2">Other Environmental Mutations <span class="text-green-500 text-sm">(Can be combined freely)</span></h4>
+            <h4 class="text-lg font-semibold text-gray-800 mb-2 border-b pb-2">Other Environmental Mutations <span class="text-green-500 text-sm">(Can be combined freely, sorted by effectiveness)</span></h4>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                <div id="rev-env-bloodlit" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="3" data-type="rev-env">
+                <!-- +1 Bonus Mutations -->
+                <div id="rev-env-windstruck" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="1" data-type="rev-env">
                     <div class="flex flex-col items-center">
-                        <i class="fas fa-moon mutation-icon text-red-500"></i>
-                        <h3 class="text-lg font-semibold">Bloodlit</h3>
-                        <p class="text-xl font-bold text-teal-600">+3</p>
-                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×4. Occurs during Blood Moon events, 33% chance every 3 hours</p>
+                        <i class="fas fa-wind mutation-icon text-gray-500"></i>
+                        <h3 class="text-lg font-semibold">Windstruck</h3>
+                        <p class="text-xl font-bold text-teal-600">+1</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×2. Can be obtained during Windy weather.</p>
                     </div>
                 </div>
-                <div id="rev-env-shocked" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="99" data-type="rev-env">
-                    <div class="flex flex-col items-center">
-                        <i class="fas fa-bolt mutation-icon text-yellow-400"></i>
-                        <h3 class="text-lg font-semibold">Shocked</h3>
-                        <p class="text-xl font-bold text-teal-600">+99</p>
-                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×100. Triggered by lightning during thunderstorms</p>
-                    </div>
-                </div>
-                <div id="rev-env-celestial" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="119" data-type="rev-env">
-                    <div class="flex flex-col items-center">
-                        <i class="fas fa-star mutation-icon text-purple-400"></i>
-                        <h3 class="text-lg font-semibold">Celestial</h3>
-                        <p class="text-xl font-bold text-teal-600">+119</p>
-                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×120. Obtained during Meteor Shower events, star-struck crops</p>
-                    </div>
-                </div>
-                 <div id="rev-env-disco" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="124" data-type="rev-env">
-                    <div class="flex flex-col items-center">
-                        <i class="fas fa-music mutation-icon text-pink-500"></i>
-                        <h3 class="text-lg font-semibold">Disco</h3>
-                        <p class="text-xl font-bold text-teal-600">+124</p>
-                         <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×125. Available during Disco Event, admin-spawned (not player-triggered)</p>
-                    </div>
-                </div>
-                 <div id="rev-env-chocolate" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="1" data-type="rev-env">
+                <div id="rev-env-chocolate" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="1" data-type="rev-env">
                     <div class="flex flex-col items-center">
                         <i class="fas fa-cookie mutation-icon text-yellow-800"></i>
                         <h3 class="text-lg font-semibold">Chocolate</h3>
@@ -680,12 +757,47 @@
                         <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×2. Available during Night cycles, part of the Lunar Glow Event (hourly)</p>
                     </div>
                 </div>
-                <div id="rev-env-zombified" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="24" data-type="rev-env">
+                <!-- +2 Bonus Mutation -->
+                <div id="rev-env-pollinated" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="2" data-type="rev-env">
                     <div class="flex flex-col items-center">
-                        <i class="fas fa-biohazard mutation-icon text-green-600"></i>
-                        <h3 class="text-lg font-semibold">Zombified</h3>
-                        <p class="text-xl font-bold text-teal-600">+24</p>
-                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×25. Chance to occur by the Chicken Zombie pet (20% every 30 minutes)</p>
+                        <i class="fas fa-asterisk mutation-icon text-yellow-600"></i>
+                        <h3 class="text-lg font-semibold">Pollinated</h3>
+                        <p class="text-xl font-bold text-teal-600">+2</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×3. During Swarm event in Buzzy Bees update or by using bees (e.g., Petal Bee) in garden</p>
+                    </div>
+                </div>
+                <!-- +3 Bonus Mutations -->
+                <div id="rev-env-burnt" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="3" data-type="rev-env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-fire-alt mutation-icon text-red-600"></i>
+                        <h3 class="text-lg font-semibold">Burnt</h3>
+                        <p class="text-xl font-bold text-teal-600">+3</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×4. Can be obtained using the Cooked Owl pet.</p>
+                    </div>
+                </div>
+                <div id="rev-env-verdant" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="3" data-type="rev-env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-leaf mutation-icon text-green-500"></i>
+                        <h3 class="text-lg font-semibold">Verdant</h3>
+                        <p class="text-xl font-bold text-teal-600">+3</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×4. Can be obtained by the passive ability of the Scarlet Macaw pet.</p>
+                    </div>
+                </div>
+                <div id="rev-env-bloodlit" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="3" data-type="rev-env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-moon mutation-icon text-red-500"></i>
+                        <h3 class="text-lg font-semibold">Bloodlit</h3>
+                        <p class="text-xl font-bold text-teal-600">+3</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×4. Occurs during Blood Moon events, 33% chance every 3 hours</p>
+                    </div>
+                </div>
+                <!-- +4 Bonus Mutations -->
+                <div id="rev-env-heavenly" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="4" data-type="rev-env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-feather-alt mutation-icon text-blue-300"></i>
+                        <h3 class="text-lg font-semibold">Heavenly</h3>
+                        <p class="text-xl font-bold text-teal-600">+4</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×5. Obtained during the admin-exclusive Floating Jandel Event.</p>
                     </div>
                 </div>
                 <div id="rev-env-plasma" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="4" data-type="rev-env">
@@ -696,7 +808,50 @@
                         <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×5. Obtained through the laser admin weather (Cosmetics update, May 2025)</p>
                     </div>
                 </div>
-                 <div id="rev-env-twisted" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="30" data-type="rev-env">
+                <div id="rev-env-honeyglazed" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="4" data-type="rev-env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-tint mutation-icon text-yellow-600"></i>
+                        <h3 class="text-lg font-semibold">Honey Glazed</h3>
+                        <p class="text-xl font-bold text-teal-600">+4</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×5. By placing the Honey Sprinkler or using the Bear Bee Pet</p>
+                    </div>
+                </div>
+                <!-- +17 Bonus Mutation -->
+                <div id="rev-env-paradisaical" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="17" data-type="rev-env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-spa mutation-icon text-pink-400"></i>
+                        <h3 class="text-lg font-semibold">Paradisaical</h3>
+                        <p class="text-xl font-bold text-teal-600">+17</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×18. Occurs when a plant has both Verdant and Sundried mutations.</p>
+                    </div>
+                </div>
+                <!-- +24 Bonus Mutations -->
+                <div id="rev-env-cooked" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="24" data-type="rev-env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-drumstick-bite mutation-icon text-yellow-900"></i>
+                        <h3 class="text-lg font-semibold">Cooked</h3>
+                        <p class="text-xl font-bold text-teal-600">+24</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×25. Can be obtained using the Cooked Owl pet.</p>
+                    </div>
+                </div>
+                <div id="rev-env-molten" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="24" data-type="rev-env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-fire-alt mutation-icon text-red-800"></i>
+                        <h3 class="text-lg font-semibold">Molten</h3>
+                        <p class="text-xl font-bold text-teal-600">+24</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×25. Obtained only during the admin-exclusive Volcano event.</p>
+                    </div>
+                </div>
+                <div id="rev-env-zombified" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="24" data-type="rev-env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-biohazard mutation-icon text-green-600"></i>
+                        <h3 class="text-lg font-semibold">Zombified</h3>
+                        <p class="text-xl font-bold text-teal-600">+24</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×25. Chance to occur by the Chicken Zombie pet (20% every 30 minutes)</p>
+                    </div>
+                </div>
+                <!-- +30 Bonus Mutation -->
+                <div id="rev-env-twisted" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="30" data-type="rev-env">
                     <div class="flex flex-col items-center">
                         <i class="fas fa-wind mutation-icon text-gray-500"></i>
                         <h3 class="text-lg font-semibold">Twisted</h3>
@@ -704,16 +859,67 @@
                         <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×31. Obtained through the Tornado Event (noted as unused per Discord staff)</p>
                     </div>
                 </div>
-
-                <div id="rev-env-pollinated" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="2" data-type="rev-env">
+                <!-- +84 Bonus Mutation -->
+                <div id="rev-env-sundried" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="84" data-type="rev-env">
                     <div class="flex flex-col items-center">
-                        <i class="fas fa-asterisk mutation-icon text-yellow-600"></i>
-                        <h3 class="text-lg font-semibold">Pollinated</h3>
-                        <p class="text-xl font-bold text-teal-600">+2</p>
-                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×3. During Swarm event in Buzzy Bees update or by using bees (e.g., Petal Bee) in garden</p>
+                        <i class="fas fa-sun mutation-icon text-orange-500"></i>
+                        <h3 class="text-lg font-semibold">Sundried</h3>
+                        <p class="text-xl font-bold text-teal-600">+84</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×85. Can be obtained during Heatwave events.</p>
                     </div>
                 </div>
-
+                <!-- +99 Bonus Mutations -->
+                <div id="rev-env-alienlike" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="99" data-type="rev-env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-user-astronaut mutation-icon text-green-400"></i>
+                        <h3 class="text-lg font-semibold">Alienlike</h3>
+                        <p class="text-xl font-bold text-teal-600">+99</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×100. Can be obtained during the Alien Invasion event.</p>
+                    </div>
+                </div>
+                <div id="rev-env-shocked" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="99" data-type="rev-env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-bolt mutation-icon text-yellow-400"></i>
+                        <h3 class="text-lg font-semibold">Shocked</h3>
+                        <p class="text-xl font-bold text-teal-600">+99</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×100. Triggered by lightning during thunderstorms</p>
+                    </div>
+                </div>
+                <!-- +119 Bonus Mutations -->
+                <div id="rev-env-galactic" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="119" data-type="rev-env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-space-shuttle mutation-icon text-purple-500"></i>
+                        <h3 class="text-lg font-semibold">Galactic</h3>
+                        <p class="text-xl font-bold text-teal-600">+119</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×120. Can be obtained during the Space Travel event.</p>
+                    </div>
+                </div>
+                <div id="rev-env-celestial" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="119" data-type="rev-env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-star mutation-icon text-purple-400"></i>
+                        <h3 class="text-lg font-semibold">Celestial</h3>
+                        <p class="text-xl font-bold text-teal-600">+119</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×120. Obtained during Meteor Shower events, star-struck crops</p>
+                    </div>
+                </div>
+                <!-- +124 Bonus Mutations -->
+                <div id="rev-env-meteoric" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="124" data-type="rev-env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-meteor mutation-icon text-red-500"></i>
+                        <h3 class="text-lg font-semibold">Meteoric</h3>
+                        <p class="text-xl font-bold text-teal-600">+124</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×125. Obtained only during the admin-exclusive Meteor Strike event.</p>
+                    </div>
+                </div>
+                <div id="rev-env-disco" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="124" data-type="rev-env">
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-music mutation-icon text-pink-500"></i>
+                        <h3 class="text-lg font-semibold">Disco</h3>
+                        <p class="text-xl font-bold text-teal-600">+124</p>
+                         <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×125. Available during Disco Event, admin-spawned (not player-triggered)</p>
+                    </div>
+                </div>
+                <!-- +134 Bonus Mutation -->
                 <div id="rev-env-voidtouched" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="134" data-type="rev-env">
                     <div class="flex flex-col items-center">
                         <i class="fas fa-circle-notch mutation-icon text-purple-600"></i>
@@ -722,12 +928,13 @@
                         <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×135. During Black Hole weather event (admin-spawned)</p>
                     </div>
                 </div>
-                <div id="rev-env-honeyglazed" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="4" data-type="rev-env">
+                <!-- +149 Bonus Mutation -->
+                <div id="rev-env-dawnbound" class="card env-card bg-gray-50 p-4 cursor-pointer" data-bonus="149" data-type="rev-env">
                     <div class="flex flex-col items-center">
-                        <i class="fas fa-tint mutation-icon text-yellow-600"></i>
-                        <h3 class="text-lg font-semibold">Honey Glazed</h3>
-                        <p class="text-xl font-bold text-teal-600">+4</p>
-                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×5. By placing the Honey Sprinkler or using the Bear Bee Pet</p>
+                        <i class="fas fa-sun mutation-icon text-yellow-400"></i>
+                        <h3 class="text-lg font-semibold">Dawnbound</h3>
+                        <p class="text-xl font-bold text-teal-600">+149</p>
+                        <p class="text-sm text-gray-600 text-center mt-2 mutation-description">Standalone ×150. Obtained during the Sun God Event; only applies to Sunflowers.</p>
                     </div>
                 </div>
             </div>
@@ -1043,7 +1250,7 @@
                 }
                 
                 if (envBonusListRev.length > 0 && typeof calculatedBaseValue === 'number') { // Append only if calculation was successful
-                    reverseCalculationExplanationDisplayEl.innerHTML += `<br><br>Selected Environmental Bonuses: ${envBonusListRev.join(", ")}`;
+                    reverseCalculationExplanationDisplayEl.innerHTML += `<br><br>Selected Environmental Bonuses: ${envBonusList.join(", ")}`;
                 } else if (envBonusListRev.length > 0) {
                     const currentText = reverseCalculationExplanationDisplayEl.textContent;
                     reverseCalculationExplanationDisplayEl.innerHTML = currentText + `<br><br>Selected Environmental Bonuses: ${envBonusListRev.join(", ")}`;
